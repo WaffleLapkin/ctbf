@@ -141,6 +141,29 @@ impl<T: OutputList> OutputList for Cons<T> {
 ///
 /// [add_source]: https://en.wikipedia.org/wiki/Brainfuck#Adding_two_values
 /// [hw_source]: https://en.wikipedia.org/wiki/Brainfuck#Hello_World!
+///
+/// ## Limitations
+///
+/// Since this is a rust macro, it can only work with valid Rust token tree.
+/// This for example means that you can't have an unpaired `)`.
+///
+/// Since this macro only works with syntax, input can only be provided as _literals_,
+/// even constants won't suffice.
+///
+/// Since this macro recurses at least once for every token, recursion limit is
+/// easily exhausted.
+///
+/// Dot after an integer is ignored (`1.` is tokened by Rust as a floting point
+/// literal and it can't be inspected by declarative macros):
+/// ```rust
+/// use ctbf::{ctbf, OutputList};
+///
+/// let nothing = ctbf! { in 0.  1.12  32.  235.77 };
+/// assert_eq!(nothing.to_vec(), []);        
+///                                                   
+/// let zeroes = ctbf! { in 0 . 1 .12 32 . 235 .77 };
+/// assert_eq!(zeroes.to_vec(), [0; 4]);
+/// ```
 #[macro_export]
 macro_rules! ctbf {
     // Entry point
