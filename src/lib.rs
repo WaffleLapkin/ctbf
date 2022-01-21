@@ -127,6 +127,18 @@ impl<T: OutputList> OutputList for Cons<T> {
 /// assert_eq!(out.to_ascii_string(), "Hello World!\n");
 /// ```
 ///
+/// Getting output directly using `Cons` and `Nil`:
+/// ```
+/// use ctbf::{ctbf, Cons, Nil};
+///
+/// const THREE: u8 = {
+///     let Cons(v, Nil) = ctbf! { in +++. };
+///     v
+/// };
+///
+/// assert_eq!(THREE, 3);
+/// ```
+///
 /// [add_source]: https://en.wikipedia.org/wiki/Brainfuck#Adding_two_values
 /// [hw_source]: https://en.wikipedia.org/wiki/Brainfuck#Hello_World!
 #[macro_export]
